@@ -1,4 +1,4 @@
-export const cart = [{
+export let cart = [{
   productId: 'e43638ce-6aa0-4b85-b27f-e1d07eb678c6',
   quantity: 2,
 }, {
@@ -31,3 +31,9 @@ export function updateCartQuantity(){
   });
   document.querySelector('.js-cart-quantity').innerText = `${cartQuantity}`;
 }
+export function removeFromCart(id) {  
+  cart = cart.filter((item) => {
+    return item.productId !== id; 
+  });
+}
+//de remove thi ta tao ra 1 array moi, loop qua, trung id thi ko chen vao arr moi do
