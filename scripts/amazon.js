@@ -1,4 +1,5 @@
 import {products} from '../data/products.js';
+import {cart} from '../data/cart.js';
 let productHtml = '';
 products.forEach((product) => {
     productHtml += `<div class="product-container">
@@ -45,9 +46,35 @@ products.forEach((product) => {
             Added
           </div>
 
-          <button class="add-to-cart-button button-primary">
+          <button class="add-to-cart-button button-primary js-add-to-cart"
+          data-product-id="${product.id}"
+          >
             Add to Cart
           </button>
         </div>`
 })
 document.querySelector('.js-products-grid').innerHTML = productHtml;
+
+function checkExistItem(id) {
+  for(let item of cart) {
+    if(item.id === id) {
+      item.quantity += 1;
+      return true;
+    } 
+  }
+  return false;
+}
+
+document.querySelectorAll('.js-add-to-cart')
+  .forEach((button) => {
+  button.addEventListener('click', () => {
+    let check = checkExistItem(button.dataset.productId);
+    if(!check) {
+      cart.push({
+        id: button.dataset.productId, 
+        quantity: 1
+    })
+    }
+  console.log(cart)
+  })
+});
