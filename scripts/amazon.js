@@ -1,6 +1,8 @@
 import {products} from '../data/products.js';
-import {cart} from '../data/cart.js';
+import {cart, addToCart, updateCartQuantity} from '../data/cart.js';
+import { formatCurrency } from './utils/money.js';
 let productHtml = '';
+
 products.forEach((product) => {
     productHtml += `<div class="product-container">
           <div class="product-image-container">
@@ -21,7 +23,7 @@ products.forEach((product) => {
           </div>
 
           <div class="product-price">
-            $${(product.priceCents/100).toFixed(2)}
+            $${formatCurrency(product.priceCents)}
           </div>
 
           <div class="product-quantity-container">
@@ -55,26 +57,16 @@ products.forEach((product) => {
 })
 document.querySelector('.js-products-grid').innerHTML = productHtml;
 
-function checkExistItem(id) {
-  for(let item of cart) {
-    if(item.id === id) {
-      item.quantity += 1;
-      return true;
-    } 
-  }
-  return false;
-}
+
 
 document.querySelectorAll('.js-add-to-cart')
   .forEach((button) => {
   button.addEventListener('click', () => {
-    let check = checkExistItem(button.dataset.productId);
-    if(!check) {
-      cart.push({
-        id: button.dataset.productId, 
-        quantity: 1
-    })
-    }
+    const id = button.dataset.productId; //get được id của từng element được chọn 
+    addToCart(id);
+    updateCartQuantity();
   console.log(cart)
+  
   })
 });
+//tinsh total quantity trong cart
